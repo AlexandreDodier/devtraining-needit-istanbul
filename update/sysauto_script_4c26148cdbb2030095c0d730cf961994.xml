@@ -14,27 +14,26 @@
         <run_time>1970-01-01 16:00:00</run_time>
         <run_type>daily</run_type>
         <script><![CDATA[// Get today's time and date
-var past= new GlideDateTime();
+	var rightNow = new GlideDateTime();
 
-// Query the database for NeedIt Task records with Due date field values within
-// 24 hours from now.  Only return NeedIt Task records that do not have
-// a State field value of Closed Complete.
-var late= new GlideRecord('x_58872_needit_needit_task');
-late.addQuery('due_date','<=',past);
-late.addQuery('state','!=',3);
+	// Query the database for NeedIt Task records with Due date field values older
+	// than the current time.  Only return NeedIt Task records that do not have
+	// a State field value of Closed Complete.
+	var overdueNITasks = new GlideRecord('x_58872_needit_needit_task');
+	overdueNITasks.addQuery('due_date','<=',rightNow);
+	overdueNITasks.addQuery('state','!=',3);
 
-late.query();
-// Write a log message for each overdue NeedIt Task Record
-while(late.next()){
-	gs.info("NeedIt Task due soon record = " + late.number);
-gs.eventQueue('x_58872_needit.overdueNeedItTask',late,late.number,gs.getUserName());
-}]]></script>
+	overdueNITasks.query();
+	// Write a log message for each overdue NeedIt Task Record
+	while(overdueNITasks.next()){
+		gs.info("Overdue NeedIt Task record = " + overdueNITasks.number);
+	}]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2017-11-28 14:26:14</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>4c26148cdbb2030095c0d730cf961994</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>Find NeedIt OverdueTasks</sys_name>
         <sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package>
         <sys_policy/>
@@ -42,7 +41,7 @@ gs.eventQueue('x_58872_needit.overdueNeedItTask',late,late.number,gs.getUserName
         <sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope>
         <sys_update_name>sysauto_script_4c26148cdbb2030095c0d730cf961994</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-11-28 15:32:32</sys_updated_on>
+        <sys_updated_on>2017-11-28 17:37:18</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>
